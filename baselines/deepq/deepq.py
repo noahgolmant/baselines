@@ -330,4 +330,4 @@ def learn(env,
                 logger.log("Restored model with mean reward: {}".format(saved_mean_reward))
             load_variables(model_file)
 
-    return act
+    return act, debug['q_func'], debug['obs']
