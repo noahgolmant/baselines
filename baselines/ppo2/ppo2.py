@@ -88,7 +88,7 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
     policy = build_policy(env, network, **network_kwargs)
 
     # Get the nb of env
-    nenvs = env.num_envs
+    nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
 
     # Get state_space and action_space
     ob_space = env.observation_space

@@ -35,7 +35,7 @@ class Model(object):
             alpha=0.99, epsilon=1e-5, total_timesteps=int(80e6), lrschedule='linear'):
 
         sess = tf_util.get_session()
-        nenvs = env.num_envs
+        nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
         nbatch = nenvs*nsteps
 
 
@@ -186,7 +186,7 @@ def learn(
     set_global_seeds(seed)
 
     # Get the nb of env
-    nenvs = env.num_envs
+    nenvs = env.num_envs if hasattr(env, 'num_envs') else 1
     policy = build_policy(env, network, **network_kwargs)
 
     # Instantiate the model object (that creates step_model and train_model)
