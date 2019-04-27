@@ -72,14 +72,24 @@ def train(args, extra_args):
 
     print('Training {} on {}:{} with arguments \n{}'.format(args.alg, env_type, env_id, alg_kwargs))
 
-    model, q_placeholder, obs_placeholder = learn(
-        env=env,
-        seed=seed,
-        total_timesteps=total_timesteps,
-        **alg_kwargs
-    )
+    if args.alg == 'deepq':
+        model, y_placeholder, obs_placeholder = learn(
+            env=env,
+            seed=seed,
+            total_timesteps=total_timesteps,
+            **alg_kwargs
+        )
+    else:
+        model = learn(
+            env=env,
+            seed=seed,
+            total_timesteps=total_timesteps,
+            **alg_kwargs
+        )
+        y_placeholder = None
+        obs_placeholder = None
 
-    return model, q_placeholder, obs_placeholder, env
+    return model, y_placeholder, obs_placeholder, env
 
 
 def build_env(args):
@@ -197,8 +207,8 @@ def main(args):
     args, unknown_args = arg_parser.parse_known_args(args)
     extra_args = parse_cmdline_kwargs(unknown_args)
 
-    if args.extra_import is not None:
-        import_module(args.extra_import)
+    # if args.extra_import is not None:
+        # import_module(args.extra_import)
 
     if MPI is None or MPI.COMM_WORLD.Get_rank() == 0:
         rank = 0
