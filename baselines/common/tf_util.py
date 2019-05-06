@@ -367,8 +367,6 @@ def load_variables(load_path, variables=None, sess=None):
             restores.append(v.assign(d))
     else:
         for v in variables:
-            import pdb
-            pdb.set_trace()
             restores.append(v.assign(loaded_params[v.name]))
 
     sess.run(restores)

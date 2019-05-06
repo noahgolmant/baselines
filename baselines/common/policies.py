@@ -15,7 +15,7 @@ class PolicyWithValue(object):
     Encapsulates fields and methods for RL policy and value function estimation with shared parameters
     """
 
-    def __init__(self, env, observations, latent, estimate_q=False, vf_latent=None, sess=None, **tensors):
+    def __init__(self, env, observations, latent, encoded_observations=None, estimate_q=False, vf_latent=None, sess=None, **tensors):
         """
         Parameters:
         ----------
@@ -34,6 +34,7 @@ class PolicyWithValue(object):
         """
 
         self.X = observations
+        self.encoded_X = encoded_observations
         self.state = tf.constant([])
         self.initial_state = None
         self.__dict__.update(tensors)
@@ -168,6 +169,7 @@ def build_policy(env, policy_network, value_network=None,  normalize_observation
         policy = PolicyWithValue(
             env=env,
             observations=X,
+            encoded_observations=encoded_x,
             latent=policy_latent,
             vf_latent=vf_latent,
             sess=sess,
